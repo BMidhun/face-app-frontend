@@ -171,7 +171,7 @@ class App extends React.Component {
       onDetect = {this.onDetect}
       />
       <FaceRecognition 
-      box = {this.state.box}
+      boxes = {this.state.box}
       imgUrl={this.state.imgUrl}/>
       </>  : (this.state.route === 'signin') ?
       <SignIn  changeRoute={this.changeRoute}
