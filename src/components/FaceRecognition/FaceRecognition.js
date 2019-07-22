@@ -4,10 +4,17 @@ import './FaceRecognition.css';
 
 
 
-function FaceRecognition ({imgUrl, box}){
+function FaceRecognition ({imgUrl, boxes}){
 
 
-    
+    const detectbox = boxes.map((box) => {
+
+        return  (<div key={box.id} 
+                     className="bounding-box"
+                     style = {{top:box.topRow, bottom:box.bottomRow, right: box.rightCol, left:box.leftCol }}>
+                </div>)
+
+    })
 
     return(
 
@@ -16,10 +23,7 @@ function FaceRecognition ({imgUrl, box}){
             <img id="inputImage" 
             src={imgUrl} alt="" width='300px' height='auto'> 
             </img>
-            <div  
-            className="bounding-box"
-             style = {{top:box.topRow, bottom:box.bottomRow, right: box.rightCol, left:box.leftCol }}>
-             </div>
+             {detectbox}
             </div>     
          </div>
 

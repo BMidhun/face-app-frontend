@@ -16,7 +16,7 @@ import Register from './components/Register/Register';
 const initialState = {
   face_input : '',
   imgUrl : '',
-  box : {},
+  box : [],
   route : 'signin',
   user : {
     id : '',
@@ -57,28 +57,30 @@ class App extends React.Component {
 
     //console.log(data);
 
-    const imgdata = data.outputs[0].data.regions[0].region_info.bounding_box;
+    for(let i = 0 ; i<data.outputs.length; i++){
+
+      for(let j=0; j<data.outputs[i].data.regions.length; j++){
+
+    const imgdata = data.outputs[i].data.regions[j].region_info.bounding_box;
 
     const imageId = document.getElementById('inputImage');
 
-    console.log(imageId.width,imageId.height);
+    console.log(imageId.width, imageId.height);
 
-    return {
-      leftCol   : imageId.width * imgdata.left_col,
-      topRow    : imageId.height * imgdata.top_row,
-      rightCol  : imageId.width - (imageId.width * imgdata.right_col),
-      bottomRow : imageId.height - (imageId.height*imgdata.bottom_row) 
-    }
+    this.setState({ box : this.state.box.concat ({
+      id : data.outputs[i].data.regions[j].id,
+      leftCol: imageId.width * imgdata.left_col,
+      topRow: imageId.height * imgdata.top_row,
+      rightCol: imageId.width - (imageId.width * imgdata.right_col),
+      bottomRow: imageId.height - (imageId.height * imgdata.bottom_row)
+    })});
 
-  } 
-  
-  setBox = (box) =>{
-    this.setState({
-
-      box : box
-
-    })
   }
+
+  }
+}
+  
+  
 
   enterInput = (event) => {
 
@@ -129,7 +131,7 @@ class App extends React.Component {
 
       } 
       //console.log(response);
-      this.setBox(this.calculateBoxPosition(data));
+      this.calculateBoxPosition(data);
     }).catch((err)=>{ console.log(err)})    
 
   }
